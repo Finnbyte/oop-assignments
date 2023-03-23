@@ -57,6 +57,9 @@ class Peikko:
 
 
 ### Kirjoita luokka Sankari tähän.
+class Sankari:
+    def __init__(self, nimi):
+       self.nimi = nimi  
 
 
 def hurraa(olio):

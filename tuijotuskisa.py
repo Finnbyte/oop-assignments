@@ -60,6 +60,12 @@ class Peikko:
 class Sankari:
     def __init__(self, nimi):
        self.nimi = nimi  
+       self.rohkeus = random.randint(1, 10)
+       self.katseen_voima = random.randint(1, 10)
+    def arvo_hurraus(self):
+        return random.choice(("Argh", "Wuhuu", "Ärr", "Anggg", "Ungghg"))
+
+        
 
 
 def hurraa(olio):

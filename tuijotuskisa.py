@@ -58,14 +58,27 @@ class Peikko:
 
 ### Kirjoita luokka Sankari tähän.
 class Sankari:
+    """Luokka, joka kuvaa Sankarin.
+
+    :ivar nimi: Sankarin nimi, annetaan parametrina
+    :type nimi: str
+
+    :ivar rohkeus: Sankarin rohkeus, arvotaan
+    :type rohkeus: int
+
+    :ivar katseen_voima: Sankarin katseen voimakkuus, arvotaan
+    :type katseen_voima: int
+
+    Julkiset metodit
+        arvo_hurraus()
+    """
+
     def __init__(self, nimi):
        self.nimi = nimi  
        self.rohkeus = random.randint(1, 10)
        self.katseen_voima = random.randint(1, 10)
     def arvo_hurraus(self):
         return random.choice(("Argh", "Wuhuu", "Ärr", "Anggg", "Ungghg"))
-
-        
 
 
 def hurraa(olio):

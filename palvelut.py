@@ -8,7 +8,12 @@ class Palvelu:
         self.tuotenimi = tuotenimi
         self.__asiakkaat = []
 
-class ParempiPalvelu:
-    pass
+class ParempiPalvelu(Palvelu):
+    def __init__(self, tuotenimi):
+        self.__edut = []
+        super().__init__(tuotenimi)
+        
+        
+    
 
 

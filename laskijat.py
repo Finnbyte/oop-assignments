@@ -44,6 +44,10 @@ class MonenLaskija(Laskija):
         # Acc tarkoittaa "accumulator", ja on muuttuja, johon kaikki uudet numerot kerrotaan
         return functools.reduce((lambda acc, next: acc*next), nums)
 
+# Argumenttien_tulostaja
+def argumenttien_tulostaja(**kwargs):
+    for key, value in kwargs.items():
+        print(f"Argumentin \"{key}\" arvo on {value}.")
 
 ### Seuraavat rivit tekevät tarkistustulostukset. Älä koske niihin.
 

@@ -1,6 +1,8 @@
 import random
 import time
 
+""" Luokka, joka kuvaa Olennon """
+""" Tästä periytyvät muut luokat tässä tiedostossa """
 class Olento:
     def __init__(self, nimi, rohkeus, katseen_voima):
         self.nimi = nimi

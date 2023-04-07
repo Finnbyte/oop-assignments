@@ -4,7 +4,9 @@ class Asiakas:
         self.__ika = ika
 
 class Palvelu:
-    pass
+    def __init__(self, tuotenimi):
+        self.tuotenimi = tuotenimi
+        self.__asiakkaat = []
 
 class ParempiPalvelu:
     pass

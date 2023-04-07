@@ -23,16 +23,15 @@ class Peikko(Olento):
         arvo_hurraus()
     """
 
-    NIMITAVUT = ("Ur", "Gar", "Grah", "Gur", "Kan", "Kazah", "Bar", "Bazh", "Ragh", "Rudz")
+    NIMITAVUT = ("Ur", "Gor", "Groh", "Gur", "Kon", "Kozoh", "Bor", "Bozh", "Rogh", "Rudz")
     RIEMUTAVUT = ("Agh", "Ugh", "Ourgh", "Drar", "Brar", "Dza", "Gra", "Gur", "Rah", "Urgh", "Ra")
 
-    def __init__(self):
+    def __init__(self, nimi='', tyyppi="tavallinen peikko", rohkeus=4, katseen_voima=4):
         """Konstruktori."""
+        self.tyyppi = tyyppi
         
-        self.nimi = self._arvo_sanat(self.NIMITAVUT, 3, "-")
-        self.rohkeus = random.randint(4, 8)
-        self.katseen_voima = random.randint(2, 4)
-
+        nimi = self._arvo_sanat(self.NIMITAVUT, 3, "-")
+        super().__init__(nimi, rohkeus, katseen_voima)
     def _arvo_sanat(self, tavut, n, erotin, p=0.5):
         """Muodostaa satunnaisen tekstin annetuista tavuista.
 
@@ -64,6 +63,51 @@ class Peikko(Olento):
         """
         return self._arvo_sanat(self.RIEMUTAVUT, 8, " ", 0.7)
 
+class Vuoripeikko(Peikko):
+    """Luokka, joka kuvaa Vuoripeikon.
+
+    :ivar nimi: peikon nimi, arvotaan
+    :type nimi: str
+    :ivar rohkeus: peikon rohkeus, arvotaan
+    :type rohkeus: int
+    :ivar katseen_voima: peikon katseen voimakkuus, arvotaan
+    :type katseen_voima: int"""
+
+    NIMITAVUT = ("Yr", "Gry", "Gryh", "Gyr", "Kan", "Kazah", "Bar", "Bazh", "Ragh", "Rydz")
+    RIEMUTAVUT = ("Agh", "Ygh", "Oyrgh", "Drar", "Brar", "Dza", "Gra", "Gyr", "Rah", "Yrgh", "Ra")
+
+    def __init__(self):
+        """Konstruktori."""
+        nimi = self._arvo_sanat(self.NIMITAVUT, 3, "-")
+        rohkeus = random.randint(4, 8)
+        katseen_voima = random.randint(2, 4)
+        tyyppi = "vuoripeikko"
+
+        super().__init__(nimi, tyyppi, rohkeus, katseen_voima)
+        
+
+class Luolapeikko(Peikko):
+    """Luokka, joka kuvaa Luolapeikon.
+
+    :ivar nimi: peikon nimi, arvotaan
+    :type nimi: str
+    :ivar rohkeus: peikon rohkeus, arvotaan
+    :type rohkeus: int
+    :ivar katseen_voima: peikon katseen voimakkuus, arvotaan
+    :type katseen_voima: int"""
+
+    NIMITAVUT = ("Ur", "Gor", "Groh", "Gur", "Kon", "Kozoh", "Bor", "Bozh", "Rogh", "Rudz")
+    RIEMUTAVUT = ("Ogh", "Ugh", "Ourgh", "Dror", "Bror", "Dzo", "Gro", "Gur", "Roh", "Urgh", "Ro")
+
+    def __init__(self):
+        """Konstruktori."""
+        nimi = self._arvo_sanat(self.NIMITAVUT, 3, "-")
+        rohkeus = random.randint(4, 8)
+        katseen_voima = random.randint(2, 4)
+        tyyppi = "luolapeikko"
+
+        super().__init__(nimi, tyyppi, rohkeus, katseen_voima)
+        
 
 ### Kirjoita luokka Sankari tähän.
 class Sankari(Olento):
@@ -83,9 +127,10 @@ class Sankari(Olento):
     """
 
     def __init__(self, nimi):
-       self.nimi = nimi  
-       self.rohkeus = random.randint(1, 10)
-       self.katseen_voima = random.randint(1, 10)
+        rohkeus = random.randint(1, 10)
+        katseen_voima = random.randint(1, 10)
+        
+        super().__init__(nimi, rohkeus, katseen_voima)
     def arvo_hurraus(self):
         return random.choice(("Argh", "Wuhuu", "Ärr", "Anggg", "Ungghg"))
 
@@ -160,6 +205,7 @@ def taistele(vasen, oikea):
 
 
 sankari = Sankari(input("Mikä on sankarimme nimi? "))
+
 pelastetut = 0
 # Käydään tuijotuskisoja peikkoja vastaan, kunnes sankari karkaa
 while sankari.rohkeus > 0:
@@ -168,10 +214,11 @@ while sankari.rohkeus > 0:
     print("Sankarimme %s kävelee kohti seikkailua." % sankarin_tiedot)
     time.sleep(0.7)
 
-    # Tulostetaan vastaan tulevan peikon tiedot.
-    peikko = Peikko()
-    peikon_tiedot = peikko.nimi + " [" + str(peikko.rohkeus) + "]"
-    print("Vastaan tulee hurja %s!" % peikon_tiedot)
+    peikko_classes = [Peikko, Vuoripeikko, Luolapeikko]
+    peikko = peikko_classes[random.randint(0, len(peikko_classes) - 1)]()
+    
+    peikon_tiedot = f"{peikko.nimi} [{str(peikko.rohkeus)}]"
+    print("Vastaan tulee hurja %s, jonka tyyppi on %s!" % (peikon_tiedot, peikko.tyyppi))
     time.sleep(1)
 
     # Käydään tuijotuskisa peikkoa vastaan.

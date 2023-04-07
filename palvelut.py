@@ -1,7 +1,10 @@
+import random
+
 class Asiakas:
     def __init__(self, nimi, ika):
         self.__nimi = nimi
         self.__ika = ika
+        self.__asiakasnro = self.__luo_asiakasnro()
         
     @property
     def nimi(self):
@@ -22,6 +25,17 @@ class Asiakas:
         if ika != "":
             self.__ika = ika
         else: raise ValueError("Anna epätyhjä ikä!")
+
+    @property
+    def asiakasnro(self):
+        return f"{'-'.join(str(index) for index in self.__asiakasnro)}"
+
+    def __luo_asiakasnro(self):
+        return [
+            random.randint(10, 99),
+            random.randint(100, 999),
+            random.randint(100, 999)
+        ] 
         
 class Palvelu:
     def __init__(self, tuotenimi):

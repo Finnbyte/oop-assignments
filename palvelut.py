@@ -3,4 +3,6 @@ class Palvelu:
 
 class Asiakas:
     pass
-    
+
+class ParempiPalvelu:
+    pass

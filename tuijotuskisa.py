@@ -1,7 +1,13 @@
 import random
 import time
 
-class Peikko:
+class Olento:
+    def __init__(self, nimi, rohkeus, katseen_voima):
+        self.nimi = nimi
+        self.rohkeus = rohkeus
+        self.katseen_voima = katseen_voima
+
+class Peikko(Olento):
     """Luokka, joka kuvaa Peikon.
 
     :ivar nimi: peikon nimi, arvotaan
@@ -20,6 +26,7 @@ class Peikko:
 
     def __init__(self):
         """Konstruktori."""
+        
         self.nimi = self._arvo_sanat(self.NIMITAVUT, 3, "-")
         self.rohkeus = random.randint(4, 8)
         self.katseen_voima = random.randint(2, 4)
@@ -57,7 +64,7 @@ class Peikko:
 
 
 ### Kirjoita luokka Sankari tähän.
-class Sankari:
+class Sankari(Olento):
     """Luokka, joka kuvaa Sankarin.
 
     :ivar nimi: Sankarin nimi, annetaan parametrina

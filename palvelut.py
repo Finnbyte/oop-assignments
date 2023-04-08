@@ -31,7 +31,7 @@ class Asiakas:
         """
         if nimi != "":
             self.__nimi = nimi
-        else: raise ValueError("Anna epätyhjä nimi asiakkaalle!")
+        else: raise ValueError("VIRHE: Anna epätyhjä nimi asiakkaalle!")
         
     @ika.setter
     def set_ika(self, ika):
@@ -40,7 +40,7 @@ class Asiakas:
         """
         if ika != "":
             self.__ika = ika
-        else: raise ValueError("Anna epätyhjä ikä!")
+        else: raise ValueError("VIRHE: Anna epätyhjä ikä!")
 
     @property
     def asiakasnro(self):
@@ -73,7 +73,7 @@ class Palvelu:
         """
         if asiakas:
             self.__asiakkaat.append(asiakas)
-        else: raise ValueError(f"Anna epätyhjä \"asiakas\"!")
+        else: raise ValueError(f"VIRHE: Anna epätyhjä \"asiakas\"!")
 
     def poista_asiakas(self, asiakas):
         """
@@ -111,7 +111,7 @@ class ParempiPalvelu(Palvelu):
         """
         if etu:
             self.__edut.append(etu)
-        else: raise ValueError(f"Anna epätyhjä \"etu\"!")
+        else: raise ValueError(f"VIRHE: Anna epätyhjä \"etu\"!")
 
     def poista_etu(self, etu):
         """

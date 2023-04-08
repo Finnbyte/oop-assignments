@@ -63,3 +63,20 @@ class ParempiPalvelu(Palvelu):
     def __init__(self, tuotenimi):
         self.__edut = []
         super().__init__(tuotenimi)
+        
+    def lisaa_etu(self, etu):
+        if etu:
+            self.__edut.append(etu)
+        else: raise ValueError(f"Anna epätyhjä \"etu\"!")
+        
+    def poista_etu(self, etu):
+        try:
+            self.__edut.remove(etu)
+        except ValueError:
+            pass
+        
+    def tulosta_edut(self):
+        print(f"Tuotteen {self.tuotenimi} edut ovat:")
+        for etu in self.__edut:
+            print(etu)
+        

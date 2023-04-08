@@ -14,17 +14,16 @@ class Asiakas:
     def ika(self):
         return self.__ika
 
-    @nimi.setter
-    def nimi(self, nimi):
+    def set_nimi(self, nimi):
         if nimi != "":
             self.__nimi = nimi
-        else: raise ValueError("Anna ep‰tyhj‰ nimi!")
+        else: raise ValueError("Anna ep√§tyhj√§ nimi asiakkaalle!")
         
     @ika.setter
-    def ika(self, ika):
+    def set_ika(self, ika):
         if ika != "":
             self.__ika = ika
-        else: raise ValueError("Anna ep‰tyhj‰ ik‰!")
+        else: raise ValueError("Anna ep√§tyhj√§ ik√§!")
 
     @property
     def asiakasnro(self):
@@ -35,13 +34,13 @@ class Asiakas:
             random.randint(10, 99),
             random.randint(100, 999),
             random.randint(100, 999)
-        ] 
-        
+        ]
+
 class Palvelu:
     def __init__(self, tuotenimi):
         self.tuotenimi = tuotenimi
         self.__asiakkaat = []
-
+        
 class ParempiPalvelu(Palvelu):
     def __init__(self, tuotenimi):
         self.__edut = []

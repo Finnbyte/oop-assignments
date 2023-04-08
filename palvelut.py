@@ -41,6 +41,24 @@ class Palvelu:
         self.tuotenimi = tuotenimi
         self.__asiakkaat = []
         
+    def lisaa_asiakas(self, asiakas):
+        if asiakas:
+            self.__asiakkaat.append(asiakas)
+        else: raise ValueError(f"Anna epätyhjä \"asiakas\"!")
+        
+    def poista_asiakas(self, asiakas):
+        try:
+            self.__asiakkaat.remove(asiakas)
+        except ValueError:
+            pass
+        
+    def _luo_asiakasrivi(self, asiakas):
+        return f"{asiakas.nimi} ({asiakas.asiakasnro}) on {asiakas.ika}-vuotias"
+    
+    def tulosta_asiakkaat(self):
+        for asiakas in self.__asiakkaat:
+            print(self._luo_asiakasrivi(asiakas))
+            
 class ParempiPalvelu(Palvelu):
     def __init__(self, tuotenimi):
         self.__edut = []

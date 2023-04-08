@@ -113,7 +113,7 @@ class ParempiPalvelu(Palvelu):
             self.__edut.append(etu)
         else: raise ValueError(f"Anna epätyhjä \"etu\"!")
 
-        def poista_etu(self, etu):
+    def poista_etu(self, etu):
         """
         Poistaa edut-listasta edun.
         Jos etua ei ole, ohittaa virheen.

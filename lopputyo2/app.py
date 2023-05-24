@@ -95,9 +95,6 @@ class UserManagementPanel:
         if self.user_manager.add_user(user) is not UserExistsException:
             self.users.append(user)
             self.user_list.insert(tk.END, user.name)
-        else:
-            # Handle errors here
-            print("Some error occured")
 
     def modify_user(self):
         selected_index = self.user_list.curselection()
@@ -115,12 +112,21 @@ class UserManagementPanel:
     def delete_user(self):
         selected_index = self.user_list.curselection()
         if selected_index:
-            username = self.user_list.get(selected_index)
-            confirm = messagebox.askyesno("Confirm Deletion", f"Are you sure you want to delete {username}?")
+            user = self.users[selected_index[0]]
+            confirm = messagebox.askyesno("Confirm Deletion", f"Are you sure you want to delete {user.name}?")
             if confirm:
-                self.user_list.delete(selected_index)
-                del self.users[selected_index]
-                self.add_entry.delete(0, tk.END)
+                try:
+                    self.user_manager.remove_user(user)
+                    self.users.remove(user)
+
+                    # Get index of name
+                    idx = self.user_list.get(0, tk.END).index(user.name)
+
+                    # Delete from user_list
+                    self.user_list.delete(idx)
+                except Exception as e:
+                    # Handle errors here
+                    print("Vittu")
         else:
             messagebox.showerror("Error", "Please select a user.")
 

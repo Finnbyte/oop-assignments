@@ -8,7 +8,7 @@ class User:
     self.gender = gender
     self.age = age
     self.wealth = wealth
-    self.id = uuid.uuid5(uuid.NAMESPACE_DNS, self.name).__str__()
+    self.id = uuid.uuid5(uuid.NAMESPACE_DNS, self.name).hex
   def array(self):
     return [self.name, self.gender, self.age, self.wealth]
 
@@ -20,7 +20,7 @@ class UserManager:
     sql = "SELECT * FROM pankkikayttajat"
     connection.mycursor.execute(sql)
     users = connection.mycursor.fetchall()
-    return users
+    return [User(user[1], user[2], user[3], user[4]) for user in users] if users is not None else [] 
 
   def add_user(self, user: User):
     # Check id (hash) not taken
@@ -34,12 +34,11 @@ class UserManager:
       connection.mydb.commit()
 
   def remove_user(self, user: User):
-    sql = "DELETE FROM kayttajat WHERE id = %s"
-    connection.mycursor.execute(sql, user.id)
+    connection.mycursor.execute("DELETE FROM pankkikayttajat WHERE id = '%s'" % user.id)
     connection.mydb.commit()
 
-  def modify_user(self, user: User):
+  def modify_user(self, user: User, new_user_data):
     sql = "UPDATE pankkikayttajat SET nimi = %s, ikä = %s, sukupuoli = %s, varat = %s WHERE id = %s"
-    connection.mycursor.execute(sql, user.array() + [user.id])
+    connection.mycursor.execute(sql, new_user_data + [user.id])
     connection.mydb.commit()
 

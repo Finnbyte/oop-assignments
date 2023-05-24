@@ -3,6 +3,26 @@ from custom_types import Gender, UserExistsException
 import tkinter as tk
 from tkinter import messagebox
 
+class MyDialog:
+    def __init__(self, parent, labels):
+        top = self.top = tk.Toplevel(parent)
+        self.entries = []
+        self.answers = []
+        for label in labels:
+            label = tk.Label(top, text=label)
+            label.pack()
+
+            entry = tk.Entry(top)
+            self.entries.append(entry)
+            entry.pack()
+
+        self.mySubmitButton = tk.Button(top, text='Submit', command=self._send)
+        self.mySubmitButton.pack()
+
+    def _send(self):
+        self.answers = [entry.get().strip() for entry in self.entries]
+        self.top.destroy()
+
 class UserManagementPanel:
     def __init__(self, root):
         self.root = root
@@ -33,16 +53,16 @@ class UserManagementPanel:
         self.details_frame = tk.Frame(self.root, padx=10, pady=10)
         self.details_frame.pack(side=tk.LEFT)
 
-        self.name_label = tk.Label(self.details_frame, text="Name:")
+        self.name_label = tk.Label(self.details_frame, text="Nimi:")
         self.name_label.pack(anchor=tk.W)
 
-        self.gender_label = tk.Label(self.details_frame, text="Gender:")
+        self.gender_label = tk.Label(self.details_frame, text="Sukupuoli:")
         self.gender_label.pack(anchor=tk.W)
 
-        self.age_label = tk.Label(self.details_frame, text="Age:")
+        self.age_label = tk.Label(self.details_frame, text="Ikä:")
         self.age_label.pack(anchor=tk.W)
 
-        self.wealth_label = tk.Label(self.details_frame, text="Wealth:")
+        self.wealth_label = tk.Label(self.details_frame, text="Varat:")
         self.wealth_label.pack(anchor=tk.W)
         # Add user entry
         self.add_entry = tk.Entry(self.root, width=30)
@@ -61,23 +81,23 @@ class UserManagementPanel:
         delete_button.grid(row=0, column=2, padx=5)
 
     def display_user_data(self, user):
-        self.name_label.config(text=f"Name: {user.name or ''}")
-        self.gender_label.config(text=f"Gender: {user.gender or ''}")
-        self.age_label.config(text=f"Age: {user.age or ''}")
-        self.wealth_label.config(text=f"Wealth: {user.wealth or ''}")
+        self.name_label.config(text=f"Nimi: {user.name or ''}")
+        self.gender_label.config(text=f"Sukupuoli: {user.gender or ''}")
+        self.age_label.config(text=f"Ikä: {user.age or ''}")
+        self.wealth_label.config(text=f"Varat: {user.wealth or ''}")
        
     def add_user(self):
-        user = User("John Smith", Gender.MALE, 18, 20)
+        inputDialog = MyDialog(root, ("Nimi:", "Sukupuoli:", "Ikä:", "Varat:"))
+        root.wait_window(inputDialog.top)
+        data = inputDialog.answers
+
+        user = User(data[0], data[1], data[2], data[3])
         if self.user_manager.add_user(user) is not UserExistsException:
             self.users.append(user)
             self.user_list.insert(tk.END, user.name)
-        return
-
-        username = self.add_entry.get().strip()
-        if username:
-            self.add_entry.delete(0, tk.END)
         else:
-            messagebox.showerror("Error", "Please enter a username.")
+            # Handle errors here
+            print("Some error occured")
 
     def modify_user(self):
         selected_index = self.user_list.curselection()
@@ -106,8 +126,7 @@ class UserManagementPanel:
 
 
 if __name__ == "__main__":
-    um = UserManager()
-    um.ensure_table()
+    UserManager().ensure_table()
 
     root = tk.Tk()
     app = UserManagementPanel(root)

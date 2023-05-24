@@ -1,4 +1,3 @@
-from tkinter.constants import DISABLED, NORMAL
 from users import *
 from custom_types import Gender, UserExistsException
 import tkinter as tk
@@ -41,17 +40,14 @@ class UserManagementPanel:
         self.user_manager = UserManager()
         self.users = self.user_manager.fetch_users()
 
-        self.selected_idx = None
-
         self.create_widgets()
 
     def on_select(self, event):
-        if self.user_list.curselection():
+        selected_idx = self.user_list.curselection()
+        if selected_idx:
             self.selected_idx = self.user_list.curselection()
             user = self.users[self.selected_idx[0]]
             self.display_user_data(user)
-        else:
-            self.selected_idx = None
 
     def create_widgets(self):
         # User list
@@ -110,53 +106,49 @@ class UserManagementPanel:
 
     def modify_user(self):
         selected_index = self.user_list.curselection()
-        if selected_index:
-            user = self.users[selected_index[0]]
+        user = self.users[selected_index[0]]
 
-            inputDialog = MyDialog(root, 
-                                   placeholders=(user.name, user.gender, user.age, user.wealth), 
-                                   labels=("Uusi nimi:", "Uusi sukupuoli:", "Uusi ikä:", "Uudet varat:"), 
-                                   title=f"Muokkaa käyttäjää {user.name}")
-            root.wait_window(inputDialog.top)
-            if inputDialog.exited_succesfully:
-                data = inputDialog.answers                                                                              
-                try:
-                    self.user_manager.modify_user(user, data)
+        inputDialog = MyDialog(root, 
+                                placeholders=(user.name, user.gender, user.age, user.wealth), 
+                                labels=("Uusi nimi:", "Uusi sukupuoli:", "Uusi ikä:", "Uudet varat:"), 
+                                title=f"Muokkaa käyttäjää {user.name}")
+        root.wait_window(inputDialog.top)
+        if inputDialog.exited_succesfully:
+            data = inputDialog.answers                                                                              
+            try:
+                self.user_manager.modify_user(user, data)
 
-                    updated_info_user = User(data[0], data[1], data[2], data[3])
+                updated_info_user = User(data[0], data[1], data[2], data[3])
 
-                    # Get index of name
-                    idx = self.user_list.get(0, tk.END).index(user.name)
+                # Get index of name
+                idx = self.user_list.get(0, tk.END).index(user.name)
 
-                    self.users[idx] = updated_info_user
+                self.users[idx] = updated_info_user
 
-                    self.user_list.delete(idx)
-                    self.user_list.insert(idx, updated_info_user.name)
-                except Exception as e: 
-                    print("Error occured:", e)
+                self.user_list.delete(idx)
+                self.user_list.insert(idx, updated_info_user.name)
+            except Exception as e: 
+                print("Error occured:", e)
 
     def delete_user(self):
         selected_index = self.user_list.curselection()
-        if selected_index:
-            user = self.users[selected_index[0]]
-            confirm = messagebox.askyesno("Confirm Deletion", f"Are you sure you want to delete {user.name}?")
-            if confirm:
-                try:
-                    self.user_manager.remove_user(user)
-                    self.users.remove(user)
+        user = self.users[selected_index[0]]
+        confirm = messagebox.askyesno("Confirm Deletion", f"Are you sure you want to delete {user.name}?")
+        if confirm:
+            try:
+                self.user_manager.remove_user(user)
+                self.users.remove(user)
 
-                    # Get index of name
-                    idx = self.user_list.get(0, tk.END).index(user.name)
+                # Get index of name
+                idx = self.user_list.get(0, tk.END).index(user.name)
 
-                    # Delete from user_list
-                    self.user_list.delete(idx)
-                except Exception as e:
-                    # Handle errors here
-                    print("Error occured:", e)
-        else:
-            messagebox.showerror("Error", "Please select a user.")
+                # Delete from user_list
+                self.user_list.delete(idx)
+            except Exception as e:
+                # Handle errors here
+                print("Error occured:", e)
 
-
+# Entry point of program
 if __name__ == "__main__":
     UserManager().ensure_table()
 

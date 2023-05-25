@@ -1,7 +1,7 @@
 class Gender:
-  OTHER = '0'
-  MALE = '1'
-  FEMALE = '2'
+  OTHER = 'Muu'
+  MALE = 'Mies'
+  FEMALE = 'Nainen'
 
 class UserExistsException(Exception):
   "Raised when user already exists in a database"

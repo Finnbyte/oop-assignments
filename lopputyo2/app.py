@@ -3,6 +3,10 @@ from custom_types import Gender, UserExistsException
 import tkinter as tk
 from tkinter import messagebox
 
+class Sorter:
+    NAME = { "title": "Nimi", "method": lambda d: d["name"], "should_reverse": False }
+    WEALTH = { "title": "Varat", "method": lambda d: int(d["wealth"]), "should_reverse": True }
+
 class MyDialog:
     def __init__(self, parent, labels, placeholders=None, title=None):
         top = self.top = tk.Toplevel(parent)
@@ -40,14 +44,16 @@ class UserManagementPanel:
         self.user_manager = UserManager()
         self.users = self.user_manager.fetch_users()
 
+        self.sort_by = Sorter.NAME
+
         self.create_widgets()
 
     def on_select(self, event):
         selected_idx = self.user_list.curselection()
         if selected_idx:
-            self.selected_idx = self.user_list.curselection()
-            user = self.users[self.selected_idx[0]]
-            self.display_user_data(user)
+            userlist_user = self.user_list.get(selected_idx)
+
+            self.display_user_data([user for user in self.users if user.name == userlist_user][0])
 
     def create_widgets(self):
         # User list
@@ -79,23 +85,44 @@ class UserManagementPanel:
         button_frame = tk.Frame(self.root)
         button_frame.pack(pady=5)
 
+        self.sort_button = tk.Button(button_frame, text=f"Sort by: {self.sort_by['title']}", command=self.swap_sorter_and_apply_sorting)
+        self.sort_button.grid(row=0, column=0, padx=10)
+
         add_button = tk.Button(button_frame, text="Add User", command=self.add_user)
-        add_button.grid(row=0, column=0, padx=5)
+        add_button.grid(row=0, column=1, padx=5)
 
         modify_button = tk.Button(button_frame, text="Modify User", command=self.modify_user)
-        modify_button.grid(row=0, column=1, padx=5)
+        modify_button.grid(row=0, column=2, padx=5)
 
         delete_button = tk.Button(button_frame, text="Delete User", command=self.delete_user)
-        delete_button.grid(row=0, column=2, padx=5)
+        delete_button.grid(row=0, column=3, padx=5)
 
     def display_user_data(self, user):
         self.name_label.config(text=f"Nimi: {user.name or ''}")
         self.gender_label.config(text=f"Sukupuoli: {user.gender or ''}")
         self.age_label.config(text=f"Ikä: {user.age or ''}")
-        self.wealth_label.config(text=f"Varat: {user.wealth or ''}")
+        self.wealth_label.config(text=f"Varat: {user.wealth or 'Ei varallisuutta'}")
+
+    def swap_sorter_and_apply_sorting(self):
+        self.sort_by = Sorter.NAME if self.sort_by == Sorter.WEALTH else Sorter.WEALTH
+        self.sort_button.config(text=f"Sort by: {self.sort_by['title']}")
+
+        # Apply sorting
+        self.apply_sorting(self.sort_by["method"], do_reverse=self.sort_by["should_reverse"])
+
+
+    def apply_sorting(self, method, do_reverse: bool):
+        names_and_wealths = [{ "name": user.name, "wealth": user.wealth } for user in self.users]
+        sorted_users = sorted(names_and_wealths, key=method, reverse=do_reverse)
+
+        self.user_list.delete(0, tk.END)
+        for user in sorted_users:
+            self.user_list.insert(tk.END, user["name"])
+        self.user_list.selection_set(0)
+
        
     def add_user(self):
-        inputDialog = MyDialog(root, ("Nimi:", "Sukupuoli:", "Ikä:", "Varat:"), "Lisää käyttäjä")
+        inputDialog = MyDialog(root, labels=("Nimi:", "Sukupuoli:", "Ikä:", "Varat:"), title="Lisää käyttäjä")
         root.wait_window(inputDialog.top)
         if inputDialog.exited_succesfully:
             data = inputDialog.answers

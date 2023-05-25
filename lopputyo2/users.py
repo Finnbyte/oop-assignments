@@ -1,5 +1,5 @@
 import uuid
-import custom_types
+import custom_types as types
 import connection
 
 class User:
@@ -27,7 +27,7 @@ class UserManager:
     connection.mycursor.execute("SELECT * FROM pankkikayttajat WHERE id = '%s'" % user.id)
     users_with_same_id = connection.mycursor.fetchone()
     if (users_with_same_id is not None):
-      return custom_types.UserExistsException
+      return types.UserExistsException
     else:
       sql = "INSERT INTO pankkikayttajat (id, nimi, sukupuoli, ikä, varat) VALUES (%s, %s, %s, %s, %s)"
       connection.mycursor.execute(sql, [user.id] + user.array())

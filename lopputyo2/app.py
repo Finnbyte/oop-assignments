@@ -1,5 +1,5 @@
 from users import *
-from custom_types import Gender, UserExistsException
+from custom_types import UserExistsException
 import tkinter as tk
 from tkinter import messagebox
 
@@ -9,11 +9,12 @@ class Sorter:
 
 class MyDialog:
     def __init__(self, parent, labels, placeholders=None, title=None):
+        # Make window work properly and size it
         top = self.top = tk.Toplevel(parent)
         top.geometry("400x200")
 
-        if title is not None:
-            top.title(title)
+        # Give window a default title else use variable
+        top.title(title or "Dialog")
 
         self.entries = []
         self.exited_succesfully = False

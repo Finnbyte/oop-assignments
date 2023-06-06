@@ -14,7 +14,7 @@ class User:
 
 class UserManager:
   def ensure_table(self):
-    connection.mycursor.execute("CREATE TABLE IF NOT EXISTS pankkikayttajat (id VARCHAR(255) PRIMARY KEY, nimi VARCHAR(255), sukupuoli VARCHAR(2), ikä INT, varat INT)")
+    connection.mycursor.execute("CREATE TABLE IF NOT EXISTS pankkikayttajat (id VARCHAR(255) PRIMARY KEY, nimi VARCHAR(255), sukupuoli VARCHAR(10), ikä INT, varat INT)")
 
   def fetch_users(self):
     sql = "SELECT * FROM pankkikayttajat"
